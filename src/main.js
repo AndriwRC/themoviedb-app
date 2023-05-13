@@ -14,9 +14,7 @@ async function getTrendingMoviesPreview() {
 
     const movies = data.results;
 
-    const trendingMoviesPreviewList = document.querySelector(
-        '#trendingPreview .trendingPreview-movieList'
-    );
+    trendingMoviesPreviewList.innerHTML = '';
 
     movies.forEach((movie) => {
         const movieContainer = document.createElement('div');
@@ -43,9 +41,7 @@ async function getCategoriesPreview() {
 
     const categories = data.genres;
 
-    const categoriesPreviewList = document.querySelector(
-        '#categoriesPreview .categoriesPreview-list'
-    );
+    categoriesPreviewList.innerHTML = '';
 
     categories.forEach((category) => {
         const categoryContainer = document.createElement('div');
