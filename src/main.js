@@ -65,6 +65,3 @@ async function getCategoriesPreview() {
 
     // console.log({ data, categories });
 }
-
-getTrendingMoviesPreview();
-getCategoriesPreview();
