@@ -8,13 +8,9 @@ const api = axios.create({
     },
 });
 
-async function getTrendingMoviesPreview() {
-    const { data, status } = await api('trending/movie/day');
-    console.log('TrendingMoviesPreview:', status);
-
-    const movies = data.results;
-
-    trendingMoviesPreviewList.innerHTML = '';
+// Utils
+function renderMovies(container, movies) {
+    container.innerHTML = '';
 
     movies.forEach((movie) => {
         const movieContainer = document.createElement('div');
@@ -29,19 +25,14 @@ async function getTrendingMoviesPreview() {
         );
 
         movieContainer.appendChild(movieImg);
-        trendingMoviesPreviewList.appendChild(movieContainer);
+        container.appendChild(movieContainer);
     });
 
     // console.log({ data, movies });
 }
 
-async function getCategoriesPreview() {
-    const { data, status } = await api('genre/movie/list');
-    console.log('CategoriesPreview: ', status);
-
-    const categories = data.genres;
-
-    categoriesPreviewList.innerHTML = '';
+function createCategories(container, categories) {
+    container.innerHTML = '';
 
     categories.forEach((category) => {
         const categoryContainer = document.createElement('div');
@@ -59,8 +50,23 @@ async function getCategoriesPreview() {
         categoryTitle.appendChild(categoryTitleText);
 
         categoryContainer.appendChild(categoryTitle);
-        categoriesPreviewList.appendChild(categoryContainer);
+        container.appendChild(categoryContainer);
     });
+}
+
+// API request
+async function getTrendingMoviesPreview() {
+    const { data, status } = await api('trending/movie/day');
+    console.log('TrendingMoviesPreview:', status);
+
+    renderMovies(trendingMoviesPreviewList, data.results);
+}
+
+async function getCategoriesPreview() {
+    const { data, status } = await api('genre/movie/list');
+    console.log('CategoriesPreview: ', status);
+
+    createCategories(categoriesPreviewList, data.genres);
 
     // console.log({ data, categories });
 }
@@ -73,25 +79,5 @@ async function getMoviesByCategory(id) {
     });
     console.log('getMoviesByCategory:', status);
 
-    const movies = data.results;
-
-    genericSection.innerHTML = '';
-
-    movies.forEach((movie) => {
-        const movieContainer = document.createElement('div');
-        movieContainer.classList.add('movie-container');
-
-        const movieImg = document.createElement('img');
-        movieImg.classList.add('movie-img');
-        movieImg.setAttribute('alt', movie.title);
-        movieImg.setAttribute(
-            'src',
-            `https://image.tmdb.org/t/p/w300/${movie.poster_path}`
-        );
-
-        movieContainer.appendChild(movieImg);
-        genericSection.appendChild(movieContainer);
-    });
-
-    // console.log({ data, movies });
+    renderMovies(genericSection, data.results);
 }
