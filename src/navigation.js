@@ -62,6 +62,7 @@ function trendsPage() {
     arrowBtn.classList.remove('header-arrow--white');
     headerTitle.classList.add('inactive');
     headerCategoryTitle.classList.remove('inactive');
+    headerCategoryTitle.innerHTML = 'Tendencias';
     searchForm.classList.add('inactive');
 
     // Sections
@@ -69,6 +70,8 @@ function trendsPage() {
     categoriesPreviewSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
+
+    getTrendingMovies();
 }
 function searchPage() {
     console.log('SEARCH');
