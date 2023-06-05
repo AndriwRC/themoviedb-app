@@ -227,6 +227,12 @@ footer {
     max-width: 150px;
 }
 
+.movie-container .movie-img--loading {
+    background-color: var(--purple-light-2);
+    min-height: 225px;
+    margin-bottom: 15px;
+}
+
 /* Categories */
 .category-container {
     width: 45%;
@@ -239,6 +245,11 @@ footer {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.category-title--loading {
+    background-color: var(--purple-light-2);
+    border-radius: 8px;
+    height: 21px;
+}
 
 .category-title::before {
     content: '••••';
@@ -249,6 +260,9 @@ footer {
     margin-right: 8px;
     width: 8px;
     height: 8px;
+}
+.category-title--loading::before {
+    background-color: var(--purple-light-2);
 }
 #id28 {
     --idColor: var(--yellow);
