@@ -38,6 +38,12 @@ function renderMovies(container, movies, lazyLoad = false) {
         if (lazyLoad) {
             lazyLoader.observe(movieImg);
         }
+        movieImg.addEventListener('error', () => {
+            movieImg.setAttribute(
+                'src',
+                `https://via.placeholder.com/300x450/5c218a/ffffff?text=film`
+            );
+        });
 
         movieContainer.appendChild(movieImg);
         container.appendChild(movieContainer);
