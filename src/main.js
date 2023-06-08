@@ -18,8 +18,14 @@ const lazyLoader = new IntersectionObserver((entries) => {
 });
 
 // Utils
-function renderMovies(container, movies, lazyLoad = false) {
-    container.innerHTML = '';
+function renderMovies(
+    container,
+    movies,
+    { lazyLoad = false, clean = true } = {}
+) {
+    console.log('Lazy&clean', lazyLoad, clean);
+
+    if (clean) container.innerHTML = '';
 
     movies.forEach((movie) => {
         const movieContainer = document.createElement('div');
@@ -80,13 +86,18 @@ async function getTrendingMoviesPreview() {
     const { data, status } = await api('trending/movie/day');
     console.log('TrendingMoviesPreview:', status);
 
-    renderMovies(trendingMoviesPreviewList, data.results, true);
+    renderMovies(trendingMoviesPreviewList, data.results, { lazyLoad: true });
 }
-async function getTrendingMovies() {
-    const { data, status } = await api('trending/movie/day');
+async function getTrendingMovies(page = 1) {
+    const { data, status } = await api('trending/movie/day', {
+        params: { page },
+    });
     console.log('TrendingMoviesPreview:', status);
 
-    renderMovies(genericSection, data.results);
+    renderMovies(genericSection, data.results, {
+        lazyLoad: true,
+        clean: page == 1,
+    });
 }
 
 async function getCategoriesPreview() {
