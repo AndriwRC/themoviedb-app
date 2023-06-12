@@ -92,6 +92,7 @@ async function getTrendingMovies(page = 1) {
     const { data, status } = await api('trending/movie/day', {
         params: { page },
     });
+    maxPage = data.total_pages;
     console.log('TrendingMoviesPreview:', status);
 
     renderMovies(genericSection, data.results, {
@@ -109,26 +110,36 @@ async function getCategoriesPreview() {
     // console.log({ data, categories });
 }
 
-async function getMoviesByCategory(id) {
+async function getMoviesByCategory(id, page = 1) {
     const { data, status } = await api('discover/movie', {
         params: {
+            page,
             with_genres: id,
         },
     });
+    maxPage = data.total_pages;
     console.log('getMoviesByCategory:', status);
 
-    renderMovies(genericSection, data.results);
+    renderMovies(genericSection, data.results, {
+        lazyLoad: true,
+        clean: page == 1,
+    });
 }
 
-async function getMoviesBySearch(query) {
+async function getMoviesBySearch(query, page = 1) {
     const { data, status } = await api('search/movie', {
         params: {
+            page,
             query,
         },
     });
+    maxPage = data.total_pages;
     console.log('getMoviesBySearch:', status, data);
 
-    renderMovies(genericSection, data.results);
+    renderMovies(genericSection, data.results, {
+        lazyLoad: true,
+        clean: page == 1,
+    });
 }
 
 async function getMovieById(id) {
