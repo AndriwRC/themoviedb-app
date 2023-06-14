@@ -1,3 +1,4 @@
+// Data
 const api = axios.create({
     baseURL: 'https://api.themoviedb.org/3/',
     header: {
@@ -7,7 +8,23 @@ const api = axios.create({
         api_key: API_KEY,
     },
 });
+const likedMovies = JSON.parse(localStorage.getItem('liked_movies')) || {};
 
+function likeMovie(movie) {
+    console.log(likedMovies);
+
+    if (likedMovies[movie.id]) {
+        delete likedMovies[movie.id];
+        getTrendingMoviesPreview();
+    } else {
+        likedMovies[movie.id] = movie;
+    }
+
+    localStorage.setItem('liked_movies', JSON.stringify(likedMovies));
+    getLikedMovies();
+}
+
+// Utils
 const lazyLoader = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -17,7 +34,6 @@ const lazyLoader = new IntersectionObserver((entries) => {
     });
 });
 
-// Utils
 function renderMovies(
     container,
     movies,
@@ -30,9 +46,6 @@ function renderMovies(
     movies.forEach((movie) => {
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
-        movieContainer.addEventListener('click', () => {
-            location.hash = `#movie=${movie.id}`;
-        });
 
         const movieImg = document.createElement('img');
         movieImg.classList.add('movie-img');
@@ -41,6 +54,20 @@ function renderMovies(
             lazyLoad ? 'data-img' : 'src',
             `https://image.tmdb.org/t/p/w300/${movie.poster_path}`
         );
+        movieImg.addEventListener('click', () => {
+            location.hash = `#movie=${movie.id}`;
+        });
+
+        const movieBtn = document.createElement('button');
+        movieBtn.classList.add('movie-btn');
+        if (likedMovies[movie.id]) {
+            movieBtn.classList.add('movie-btn--liked');
+        }
+        movieBtn.addEventListener('click', () => {
+            movieBtn.classList.toggle('movie-btn--liked');
+            likeMovie(movie);
+        });
+
         if (lazyLoad) {
             lazyLoader.observe(movieImg);
         }
@@ -52,6 +79,7 @@ function renderMovies(
         });
 
         movieContainer.appendChild(movieImg);
+        movieContainer.appendChild(movieBtn);
         container.appendChild(movieContainer);
     });
 
@@ -167,4 +195,14 @@ async function getSimilarMovies(id) {
 
     renderMovies(relatedMoviesContainer, data.results);
     relatedMoviesContainer.scrollTo(0, 0);
+}
+
+function getLikedMovies() {
+    const moviesArray = Object.values(likedMovies);
+    console.log(moviesArray);
+
+    renderMovies(likedMoviesList, moviesArray, {
+        lazyLoad: true,
+        clean: true,
+    });
 }

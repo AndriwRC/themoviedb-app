@@ -6,6 +6,7 @@ const trendingPreviewSection = getNode('#trendingPreview');
 const categoriesPreviewSection = getNode('#categoriesPreview');
 const genericSection = getNode('#genericList');
 const movieDetailSection = getNode('#movieDetail');
+const likedMoviesSection = getNode('#liked');
 
 // Lists & Containers
 const searchForm = getNode('#searchForm');
@@ -13,6 +14,7 @@ const trendingMoviesPreviewList = getNode('.trendingPreview-movieList');
 const categoriesPreviewList = getNode('.categoriesPreview-list');
 const movieDetailCategoriesList = getNode('#movieDetail .categories-list');
 const relatedMoviesContainer = getNode('.relatedMovies-scrollContainer');
+const likedMoviesList = getNode('.liked-movieList');
 
 // Elements
 const headerTitle = getNode('.header-title');
